@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TWICE: ONE IN A MILL10N - Official Movie Site</title>
+    <style>
+        /* 기본 리셋 및 폰트 설정 */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; background-color: #FAFAFA; color: #222; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+        
+        :root {
+            --twice-magenta: #FF5FA2;
+            --twice-apricot: #FCC89B;
+            --twice-apricot-dark: #F5A25D; /* 흰 배경 가독성을 위한 어두운 애프리콧 */
+        }
+
+        /* --- 글로벌 네비게이션 바 (라이트 테마) --- */
+        header { position: fixed; top: 0; width: 100%; padding: 20px; display: flex; justify-content: space-between; align-items: center; background: rgba(255, 255, 255, 0.95); z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.05); backdrop-filter: blur(10px); }
+        header .logo-text { font-size: 1.5rem; font-weight: 900; letter-spacing: 2px; color: #111; }
+        header .logo-text span { color: var(--twice-magenta); }
+        
+        /* 햄버거 메뉴 */
+        .menu-icon { display: none; color: #111; font-size: 1.8rem; cursor: pointer; }
+        #menu-toggle { display: none; }
+        
+        header nav { display: flex; align-items: center; }
+        header nav a { color: #444; text-decoration: none; margin-left: 30px; font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s; }
+        header nav a:hover { color: var(--twice-magenta); }
+
+        /* --- 히어로 섹션 --- */
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; position: relative; padding: 0 20px; overflow: hidden; background-color: #ffeef4; }
+        
+        /* 밝은 배경 느낌을 위한 오버레이 및 이미지 처리 */
+        .hero-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; opacity: 0.3; mix-blend-mode: multiply; }
+        .hero-content { z-index: 10; width: 100%; max-width: 1200px; animation: fadeIn 1.5s ease-in-out; }
+        
+        .hero h3 { font-size: clamp(1rem, 3vw, 1.5rem); color: var(--twice-magenta); font-weight: 700; letter-spacing: 4px; margin-bottom: 15px; }
+        .hero h1 { font-size: clamp(3rem, 8vw, 7rem); font-weight: 900; color: #111; text-transform: uppercase; margin-bottom: 15px; letter-spacing: 2px; line-height: 1.1; }
+        .hero p { font-size: clamp(1rem, 2.5vw, 1.5rem); color: #555; margin-bottom: 40px; letter-spacing: 2px; font-weight: 500; }
+        
+        /* 예매 버튼 */
+        .cta-btn { display: inline-block; padding: 16px 40px; background-color: var(--twice-magenta); color: #fff; text-decoration: none; font-size: clamp(1rem, 2vw, 1.2rem); font-weight: bold; border-radius: 50px; text-transform: uppercase; letter-spacing: 2px; transition: all 0.3s ease; box-shadow: 0 8px 20px rgba(255, 95, 162, 0.3); }
+        .cta-btn:hover { background-color: var(--twice-apricot-dark); transform: translateY(-3px); box-shadow: 0 10px 25px rgba(245, 162, 93, 0.4); }
+
+        /* --- 공통 섹션 스타일 --- */
+        section { padding: 100px 20px; text-align: center; }
+        section h2 { font-size: clamp(2rem, 5vw, 3rem); color: #111; margin-bottom: 40px; text-transform: uppercase; letter-spacing: 2px; font-weight: 800; }
+        section h2 span { color: var(--twice-magenta); }
+
+        /* --- 시놉시스 섹션 --- */
+        .synopsis-content { max-width: 800px; margin: 0 auto; background: #ffffff; padding: 40px 30px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.05); border-top: 4px solid var(--twice-apricot); }
+        .synopsis p { line-height: 1.8; font-size: clamp(1rem, 2vw, 1.1rem); color: #444; text-align: left; margin-bottom: 20px; font-weight: 400; }
+        .synopsis p:last-child { margin-bottom: 0; }
+
+        /* --- 트레일러 --- */
+        .trailer-container { max-width: 900px; margin: 0 auto; position: relative; padding-bottom: 56.25%; height: 0; border-radius: 15px; overflow: hidden; box-shadow: 0 15px 40px rgba(255, 95, 162, 0.15); background-color: #000; }
+        .trailer-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+
+        /* --- 예매 섹션 --- */
+        .tickets { background-color: #FFF5F8; /* 아주 연한 핑크 톤 배경 */ }
+        .ticketing-box { max-width: 500px; margin: 0 auto; padding: 40px 20px; background: #ffffff; border-radius: 20px; width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .tickets p { margin-bottom: 25px; color: #666; font-size: 1rem; font-weight: 500; }
+        
+        .select-container { position: relative; width: 100%; margin-bottom: 25px; }
+        .ticketing-select { width: 100%; padding: 16px; font-size: 1rem; background-color: #f9f9f9; color: #333; border: 1px solid #ddd; border-radius: 8px; appearance: none; -webkit-appearance: none; cursor: pointer; font-weight: 500; transition: border-color 0.3s; }
+        .ticketing-select:focus { outline: none; border-color: var(--twice-magenta); background-color: #fff; }
+        .select-container::after { content: '▼'; position: absolute; right: 20px; top: 50%; transform: translateY(-50%); color: #666; pointer-events: none; font-size: 0.8rem; }
+        
+        .cta-btn-full { display: block; width: 100%; text-align: center; }
+
+        /* --- 파트너사 로고 --- */
+        .partners { margin-top: 60px; display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; opacity: 0.6; }
+        .partners img { height: clamp(25px, 4vw, 35px); filter: grayscale(100%); transition: filter 0.3s, opacity 0.3s; }
+        .partners img:hover { filter: grayscale(0%); opacity: 1; }
+
+        /* --- 푸터 --- */
+        footer { padding: 50px 20px; text-align: center; border-top: 1px solid #eee; font-size: 0.85rem; color: #888; background-color: #fff; }
+        .footer-sns { display: flex; justify-content: center; gap: 20px; margin-bottom: 25px; flex-wrap: wrap; }
+        .footer-sns a { color: #666; text-decoration: none; font-size: 1rem; font-weight: bold; transition: color 0.3s; }
+        .footer-sns a:hover { color: var(--twice-magenta); }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* =========================================
+           모바일 최적화 (미디어 쿼리) 
+           ========================================= */
+        @media screen and (max-width: 768px) {
+            .menu-icon { display: block; }
+            header nav { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: rgba(255, 255, 255, 0.98); flex-direction: column; padding: 20px 0; border-top: 1px solid #eee; box-shadow: 0 10px 15px rgba(0,0,0,0.05); }
+            header nav a { margin: 15px 0; font-size: 1.1rem; color: #333; }
+            
+            #menu-toggle:checked ~ nav { display: flex; }
+
+            section { padding: 70px 15px; }
+            .synopsis-content { padding: 30px 20px; }
+            .partners { gap: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-text">TWICE <span>10TH</span></div>
+        
+        <input type="checkbox" id="menu-toggle">
+        <label for="menu-toggle" class="menu-icon">&#9776;</label>
+        
+        <nav>
+            <a href="#home" onclick="document.getElementById('menu-toggle').checked=false">Home</a>
+            <a href="#about" onclick="document.getElementById('menu-toggle').checked=false">About</a>
+            <a href="#trailer" onclick="document.getElementById('menu-toggle').checked=false">Trailer</a>
+            <a href="#tickets" onclick="document.getElementById('menu-toggle').checked=false">Tickets</a>
+        </nav>
+    </header>
+
+    <div id="home" class="hero">
+        <img src="https://via.placeholder.com/1920x1080/ffffff/dddddd?text=BRIGHT+MAIN+POSTER" alt="Main Poster" class="hero-bg">
+        <div class="hero-content">
+            <h3>10TH ANNIVERSARY DOCUMENTARY FILM</h3>
+            <h1>ONE IN A MILL<span>10</span>N</h1>
+            <p>IN CINEMAS WORLDWIDE OCT 20</p>
+            <a href="#tickets" class="cta-btn">Get Tickets</a>
+        </div>
+    </div>
+
+    <section id="about" class="synopsis">
+        <h2>10 Years with <span>ONCE</span></h2>
+        <div class="synopsis-content">
+            <p>In 2015, TWICE took their first step into the world with the greeting, "One in a million, TWICE!" With generation-defining hits like 'CHEER UP', 'TT', 'What is Love?', and 'Feel Special', they have captivated audiences far beyond K-POP, reaching the global stage.</p>
+            <p>From the sweat and tears behind the scenes to the dazzling spotlights of their world tours, this documentary reveals the genuine stories of their growth, unbreakable bond, and visions for the future. Brighter than the stage lights were the past 10 years, and at the center of it all was always their fandom, 'ONCE'.</p>
+            <p>Celebrating their 10th anniversary, <strong>[ONE IN A MILL10N]</strong> unfolds on the big screen, capturing the true essence of the one and only TWICE.</p>
+        </div>
+    </section>
+
+    <section id="trailer" class="trailer">
+        <h2>Official <span>Trailer</span></h2>
+        <div class="trailer-container">
+            <iframe src="https://www.youtube.com/embed/oRbWWmA_xOw" allowfullscreen></iframe>
+        </div>
+    </section>
+
+    <section id="tickets" class="tickets">
+        <h2>Find a <span>Screening</span></h2>
+        <div class="ticketing-box">
+            <p>Select your region below to find tickets and showtimes near you.</p>
+            <div class="select-container">
+                <select class="ticketing-select">
+                    <option value="">Select Region</option>
+                    <option value="us">United States</option>
+                    <option value="uk">United Kingdom</option>
+                    <option value="ca">Canada</option>
+                    <option value="au">Australia</option>
+                    <option value="jp">Japan</option>
+                    <option value="kr">South Korea</option>
+                    <option value="other">Other Regions</option>
+                </select>
+            </div>
+            <a href="#" class="cta-btn cta-btn-full">Search Theaters</a>
+        </div>
+
+        <div class="partners">
+            <img src="https://via.placeholder.com/120x40/ffffff/333333?text=JYP+ENT" alt="JYP Entertainment">
+            <img src="https://via.placeholder.com/150x40/ffffff/333333?text=TRAFALGAR+RELEASING" alt="Trafalgar Releasing">
+            <img src="https://via.placeholder.com/120x40/ffffff/333333?text=4DPLEX" alt="ScreenX 4DX">
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-sns">
+            <a href="#">TWITTER</a>
+            <a href="#">INSTAGRAM</a>
+            <a href="#">YOUTUBE</a>
+            <a href="#">FACEBOOK</a>
+            <a href="#">TIKTOK</a>
+        </div>
+        <p>&copy; 2026 JYP ENTERTAINMENT & TRAFALGAR RELEASING. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>
